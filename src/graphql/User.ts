@@ -10,6 +10,7 @@ export const User = objectType({
 })
 
 
+
 export const userQuery = extendType({
     type:"Query",
     definition(t){
@@ -22,25 +23,3 @@ export const userQuery = extendType({
     }
 })
 
-
-export const userMutation = extendType({
-    type:"Mutation",
-    definition(t){
-        t.nonNull.list.nonNull.field("newUser",{
-            type:"User",
-            args:{
-                email: nonNull(stringArg()),
-                password: nonNull(stringArg())
-            },
-            resolve(parent,args,context){
-                const { email,password } = args;
-                return context.prisma.user.create({
-                    data:{
-                        email,
-                        Password:password
-                    }
-                });
-            }
-        })
-    }
-})

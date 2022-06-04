@@ -28,6 +28,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Card: { // root type
     description: string; // String!
     id: number; // Int!
@@ -57,6 +61,10 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Card: { // field return type
     description: string; // String!
     id: number; // Int!
@@ -65,14 +73,15 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     deleteCard: NexusGenRootTypes['Card']; // Card!
+    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    newCard: NexusGenRootTypes['Card']; // Card!
     newTopic: NexusGenRootTypes['Topic']; // Topic!
-    newUser: NexusGenRootTypes['User'][]; // [User!]!
-    post: NexusGenRootTypes['Card']; // Card!
+    signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateCard: NexusGenRootTypes['Card']; // Card!
     updateTopic: NexusGenRootTypes['Topic']; // Topic!
   }
   Query: { // field return type
-    card: NexusGenRootTypes['Card'][]; // [Card!]!
+    cards: NexusGenRootTypes['Card'][]; // [Card!]!
     topic: NexusGenRootTypes['Topic'][]; // [Topic!]!
     user: NexusGenRootTypes['User'][]; // [User!]!
   }
@@ -89,6 +98,10 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
   Card: { // field return type name
     description: 'String'
     id: 'Int'
@@ -97,14 +110,15 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     deleteCard: 'Card'
+    login: 'AuthPayload'
+    newCard: 'Card'
     newTopic: 'Topic'
-    newUser: 'User'
-    post: 'Card'
+    signup: 'AuthPayload'
     updateCard: 'Card'
     updateTopic: 'Topic'
   }
   Query: { // field return type name
-    card: 'Card'
+    cards: 'Card'
     topic: 'Topic'
     user: 'User'
   }
@@ -125,17 +139,21 @@ export interface NexusGenArgTypes {
     deleteCard: { // args
       id: number; // Int!
     }
-    newTopic: { // args
-      topicName: string; // String!
-    }
-    newUser: { // args
+    login: { // args
       email: string; // String!
       password: string; // String!
     }
-    post: { // args
+    newCard: { // args
       description: string; // String!
       title: string; // String!
       topicId: number; // Int!
+    }
+    newTopic: { // args
+      topicName: string; // String!
+    }
+    signup: { // args
+      email: string; // String!
+      password: string; // String!
     }
     updateCard: { // args
       description: string; // String!
