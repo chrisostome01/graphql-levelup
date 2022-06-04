@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
 type Card {
   description: String!
   id: Int!
@@ -11,15 +16,16 @@ type Card {
 
 type Mutation {
   deleteCard(id: Int!): Card!
+  login(email: String!, password: String!): AuthPayload!
+  newCard(description: String!, title: String!, topicId: Int!): Card!
   newTopic(topicName: String!): Topic!
-  newUser(email: String!, password: String!): [User!]!
-  post(description: String!, title: String!, topicId: Int!): Card!
+  signup(email: String!, password: String!): AuthPayload!
   updateCard(description: String!, id: Int!, title: String!, topicId: Int!): Card!
   updateTopic(id: Int!, topicName: String!): Topic!
 }
 
 type Query {
-  card: [Card!]!
+  cards: [Card!]!
   topic: [Topic!]!
   user: [User!]!
 }

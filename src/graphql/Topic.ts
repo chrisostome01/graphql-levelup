@@ -1,4 +1,4 @@
-import { arg, extendType, intArg, nonNull, objectType, stringArg  } from "nexus";
+import {  extendType, intArg, nonNull, objectType, stringArg  } from "nexus";
 
 export const Topic = objectType({
     name: "Topic",
@@ -45,6 +45,9 @@ export  const TopicMutation = extendType(
                 },
                 resolve(parent,args,context){
                     const { topicName } = args;
+                    if (!context.userId) {  // 1
+                        throw new Error("Cannot post without logging in.");
+                    }
                     return context.prisma.topic.create({
                         data:{
                             topicName: topicName
@@ -60,6 +63,9 @@ export  const TopicMutation = extendType(
                 },
                 resolve(parent,args,context){
                     const { id , topicName } = args;
+                    if (!context.userId) {  // 1
+                        throw new Error("Cannot post without logging in.");
+                    }
                     return context.prisma.topic.update({
                         where:{
                             id
