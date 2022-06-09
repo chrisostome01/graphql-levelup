@@ -21,7 +21,7 @@ export const cardQuery = extendType(
     {
         type: "Query",
         definition(t){
-            t.nonNull.list.nonNull.field("card",{
+            t.nonNull.list.nonNull.field("cards",{
                 type:"Card",
                 resolve(parent,args, context, info){
                     return context.prisma.card.findMany();
@@ -34,7 +34,7 @@ export const cardQuery = extendType(
 export const CardMutation = extendType({
     type:"Mutation",
     definition(t){
-        t.nonNull.field("post",{
+        t.nonNull.field("newCard",{
             type:"Card",
             args:{
                 title: nonNull(stringArg()),
@@ -43,6 +43,9 @@ export const CardMutation = extendType({
             },
             resolve(parent,args,context){
                 const { description, title , topicId } = args;
+                if (!context.userId) {  // 1
+                    throw new Error("Cannot post without logging in.");
+                }
                 const addCard = context.prisma.card.create({
                     data:{
                         description,
@@ -63,6 +66,9 @@ export const CardMutation = extendType({
             },
             resolve(parent,args,context){
                 const { description, title , topicId , id } = args;
+                if (!context.userId) {  // 1
+                    throw new Error("Cannot post without logging in.");
+                }
                 const addCard = context.prisma.card.update({
                     where: {
                         id
@@ -83,6 +89,9 @@ export const CardMutation = extendType({
             },
             resolve(parent,args,context){
                 const { id } = args;
+                if (!context.userId) {  // 1
+                    throw new Error("Cannot post without logging in.");
+                }
                 return context.prisma.card.delete({
                     where:{
                         id

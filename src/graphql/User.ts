@@ -1,4 +1,4 @@
-import { extendType, nonNull, objectType, stringArg } from "nexus";
+import { extendType, objectType } from "nexus";
 
 export const User = objectType({
     name:"User",
@@ -8,6 +8,7 @@ export const User = objectType({
         t.nonNull.string("Password")
     }
 })
+
 
 
 export const userQuery = extendType({
@@ -22,25 +23,3 @@ export const userQuery = extendType({
     }
 })
 
-
-export const userMutation = extendType({
-    type:"Mutation",
-    definition(t){
-        t.nonNull.list.nonNull.field("newUser",{
-            type:"User",
-            args:{
-                email: nonNull(stringArg()),
-                password: nonNull(stringArg())
-            },
-            resolve(parent,args,context){
-                const { email,password } = args;
-                return context.prisma.user.create({
-                    data:{
-                        email,
-                        Password:password
-                    }
-                });
-            }
-        })
-    }
-})
