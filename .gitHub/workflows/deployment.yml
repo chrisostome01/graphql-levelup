@@ -1,0 +1,31 @@
+name: deploy-flashcard-heroku 
+
+on:
+  push:
+    - master
+    - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2                        
+      - run: npm ci                                      
+      - name: Run production migration                   
+        run: npm run migrate:deploy                      
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
